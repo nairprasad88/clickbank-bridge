@@ -1,0 +1,16 @@
+command:
+  - python
+  - app.py
+env:
+  - name: VENDOR_ID
+    value: "your_vendor_id"
+  - name: AFFILIATE_ID
+    value: "your_affiliate_id"
+  - name: META_PIXEL_ID
+    value: "your_pixel_id"
+  - name: GOOGLE_SHEET_ID
+    value: "your_google_sheet_id"
+  - name: GOOGLE_CREDENTIALS_FILE
+    value: "credentials.json"
+  - name: FLASK_SECRET_KEY
+    value: "change-me-to-a-random-string"

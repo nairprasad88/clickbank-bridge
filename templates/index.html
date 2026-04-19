@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exclusive Offer - Claim Yours Now</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Meta Pixel Code -->
+    {% if meta_pixel_id %}
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '{{ meta_pixel_id }}');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id={{ meta_pixel_id }}&ev=PageView&noscript=1"/></noscript>
+    {% endif %}
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center px-4 py-8">
+
+    <div class="w-full max-w-md">
+        <div class="bg-white rounded-2xl shadow-xl p-8">
+            <h1 class="text-2xl font-bold text-gray-900 text-center mb-2">
+                Unlock Your Exclusive Offer
+            </h1>
+            <p class="text-gray-600 text-center mb-6">
+                Enter your details below to get instant access.
+            </p>
+
+            <form id="leadForm" class="space-y-4">
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                    <input type="text" id="name" name="name" required
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                        placeholder="Your full name">
+                </div>
+
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                    <input type="email" id="email" name="email" required
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                        placeholder="you@example.com">
+                </div>
+
+                <div>
+                    <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                        placeholder="Your phone number">
+                </div>
+
+                <!-- Hidden FB params -->
+                <input type="hidden" id="fbclid" name="fbclid">
+                <input type="hidden" id="ad_id" name="ad_id">
+                <input type="hidden" id="adset_id" name="adset_id">
+                <input type="hidden" id="campaign_id" name="campaign_id">
+                <input type="hidden" id="ad_name" name="ad_name">
+                <input type="hidden" id="adset_name" name="adset_name">
+                <input type="hidden" id="campaign_name" name="campaign_name">
+
+                <button type="submit" id="submitBtn"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200 flex items-center justify-center">
+                    <span id="btnText">Get Instant Access</span>
+                    <svg id="spinner" class="hidden animate-spin ml-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                    </svg>
+                </button>
+
+                <div id="errorMsg" class="hidden text-red-600 text-sm text-center"></div>
+            </form>
+
+            <p class="text-xs text-gray-400 text-center mt-4">
+                Your information is secure and will never be shared.
+            </p>
+        </div>
+
+        <p class="text-xs text-gray-400 text-center mt-4 px-4">
+            ClickBank is the retailer of products on this site. ClickBank's role as retailer does not
+            constitute an endorsement, approval or review of these products or any claim, statement or
+            opinion used in promotion of these products. *Results may vary and are not guaranteed.
+        </p>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Parse URL params and populate hidden fields
+        const params = new URLSearchParams(window.location.search);
+        const fbFields = ['fbclid', 'ad_id', 'adset_id', 'campaign_id', 'ad_name', 'adset_name', 'campaign_name'];
+        fbFields.forEach(function(field) {
+            const val = params.get(field);
+            if (val) {
+                document.getElementById(field).value = val;
+            }
+        });
+
+        // Form submission
+        document.getElementById('leadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            var btn = document.getElementById('submitBtn');
+            var btnText = document.getElementById('btnText');
+            var spinner = document.getElementById('spinner');
+            var errorMsg = document.getElementById('errorMsg');
+
+            btn.disabled = true;
+            btnText.textContent = 'Processing...';
+            spinner.classList.remove('hidden');
+            errorMsg.classList.add('hidden');
+
+            var payload = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                fbclid: document.getElementById('fbclid').value,
+                ad_id: document.getElementById('ad_id').value,
+                adset_id: document.getElementById('adset_id').value,
+                campaign_id: document.getElementById('campaign_id').value,
+                ad_name: document.getElementById('ad_name').value,
+                adset_name: document.getElementById('adset_name').value,
+                campaign_name: document.getElementById('campaign_name').value
+            };
+
+            fetch('/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(function(res) { return res.json(); })
+            .then(function(data) {
+                if (data.success) {
+                    // Fire Meta Pixel Lead event
+                    if (typeof fbq !== 'undefined') {
+                        fbq('track', 'Lead');
+                    }
+                    window.location.href = data.redirect_url;
+                } else {
+                    errorMsg.textContent = data.error || 'Something went wrong. Please try again.';
+                    errorMsg.classList.remove('hidden');
+                    btn.disabled = false;
+                    btnText.textContent = 'Get Instant Access';
+                    spinner.classList.add('hidden');
+                }
+            })
+            .catch(function() {
+                errorMsg.textContent = 'Network error. Please try again.';
+                errorMsg.classList.remove('hidden');
+                btn.disabled = false;
+                btnText.textContent = 'Get Instant Access';
+                spinner.classList.add('hidden');
+            });
+        });
+    });
+    </script>
+
+</body>
+</html>
